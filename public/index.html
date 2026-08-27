@@ -1,1 +1,644 @@
+<!DOCTYPE html>
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monkum | Beta Tester Application</title>
+
+```
+<style>
+    :root {
+        --bg: #070b08;
+        --panel: #101812;
+        --panel2: #162119;
+        --green: #70eb7d;
+        --green2: #38a94a;
+        --text: #f2fff3;
+        --muted: #9caf9f;
+        --border: rgba(112, 235, 125, .18);
+        --red: #ff7d7d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background:
+            radial-gradient(circle at top, #18351d 0%, transparent 35%),
+            var(--bg);
+    }
+
+    .glow {
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: var(--green);
+        filter: blur(140px);
+        opacity: .08;
+        pointer-events: none;
+    }
+
+    .glow.one { top: -250px; left: -250px; }
+    .glow.two { right: -250px; bottom: -250px; }
+
+    .page {
+        width: min(900px, calc(100% - 30px));
+        margin: auto;
+        padding: 60px 0 40px;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .badge {
+        display: inline-block;
+        color: var(--green);
+        border: 1px solid var(--border);
+        background: rgba(112, 235, 125, .07);
+        border-radius: 999px;
+        padding: 9px 16px;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    h1 {
+        margin: 20px 0 12px;
+        font-size: clamp(42px, 8vw, 76px);
+        line-height: .95;
+    }
+
+    h1 span {
+        color: var(--green);
+        text-shadow: 0 0 30px rgba(112, 235, 125, .3);
+    }
+
+    .hero p {
+        max-width: 600px;
+        margin: auto;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .card {
+        background: rgba(16, 24, 18, .95);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, .35);
+    }
+
+    .progress {
+        height: 7px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #0a100b;
+        margin: 25px 0;
+    }
+
+    .progress div {
+        height: 100%;
+        width: 33.33%;
+        background: linear-gradient(90deg, var(--green2), var(--green));
+        transition: width .25s;
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,.1);
+        background: #0c120d;
+        color: white;
+        font: inherit;
+        outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 4px rgba(112, 235, 125, .08);
+    }
+
+    textarea { resize: vertical; }
+
+    .agreement {
+        display: flex;
+        gap: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+
+    .agreement input {
+        width: 18px;
+        height: 18px;
+        flex: none;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    button {
+        font: inherit;
+        font-weight: bold;
+        transition: opacity .2s, transform .2s;
+    }
+
+    button:hover:not(:disabled) {
+        transform: translateY(-2px);
+    }
+
+    button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+    .next,
+    .submit {
+        margin-left: auto;
+        border: 0;
+        background: var(--green);
+        color: #061007;
+        padding: 14px 22px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+    .back {
+        border: 0;
+        background: #202b22;
+        color: white;
+        padding: 14px 22px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+    .message {
+        display: none;
+        text-align: center;
+        padding: 30px 10px;
+    }
+
+    .message.show { display: block; }
+
+    .success-icon {
+        width: 70px;
+        height: 70px;
+        display: grid;
+        place-items: center;
+        margin: auto;
+        border-radius: 50%;
+        border: 1px solid var(--green);
+        color: var(--green);
+        font-size: 35px;
+    }
+
+    .error {
+        color: var(--red);
+        margin-top: 20px;
+        text-align: center;
+        display: none;
+    }
+
+    .error.show { display: block; }
+
+    footer {
+        text-align: center;
+        color: #526657;
+        padding: 30px;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    @media (max-width: 600px) {
+        .page {
+            padding-top: 30px;
+        }
+
+        .card {
+            padding: 20px 15px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<main class="page">
+
+```
+<section class="hero">
+    <div class="badge">MONKUM BETA PROGRAM</div>
+
+    <h1>
+        JOIN THE<br>
+        <span>MONKUM</span> BETA TEAM
+    </h1>
+
+    <p>
+        Help test new updates, find bugs, give feedback,
+        and help shape the future of Monkum.
+    </p>
+</section>
+
+<section class="card">
+
+    <div class="progress">
+        <div id="progressFill"></div>
+    </div>
+
+    <form id="applicationForm">
+
+        <!-- STEP 1 -->
+        <div class="step active" data-step="1">
+
+            <h2>About You</h2>
+
+            <div class="field">
+                <label for="email">Email Address *</label>
+                <input
+                    id="email"
+                    type="email"
+                    maxlength="254"
+                    required
+                    placeholder="you@example.com"
+                >
+            </div>
+
+            <div class="field">
+                <label for="metaUsername">Meta / VR Username *</label>
+                <input
+                    id="metaUsername"
+                    maxlength="50"
+                    required
+                    placeholder="Your VR username"
+                >
+            </div>
+
+            <div class="field">
+                <label for="discordUsername">Discord Username</label>
+                <input
+                    id="discordUsername"
+                    maxlength="50"
+                    placeholder="username"
+                >
+            </div>
+
+            <div class="field">
+                <label for="age">Age *</label>
+
+                <select id="age" required>
+                    <option value="">Select</option>
+                    <option>Under 13</option>
+                    <option>13-15</option>
+                    <option>16-17</option>
+                    <option>18+</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="headset">VR Headset *</label>
+
+                <select id="headset" required>
+                    <option value="">Select</option>
+                    <option>Meta Quest 2</option>
+                    <option>Meta Quest 3</option>
+                    <option>Meta Quest 3S</option>
+                    <option>Meta Quest Pro</option>
+                    <option>PC VR</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="next">
+                    Continue →
+                </button>
+            </div>
+
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step" data-step="2">
+
+            <h2>Your Experience</h2>
+
+            <div class="field">
+                <label for="playTime">
+                    How long have you played Monkum? *
+                </label>
+
+                <select id="playTime" required>
+                    <option value="">Select</option>
+                    <option>Less than 1 hour</option>
+                    <option>1-5 hours</option>
+                    <option>5-20 hours</option>
+                    <option>20+ hours</option>
+                    <option>I am new to Monkum</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="betaExperience">
+                    Have you beta tested before? *
+                </label>
+
+                <select id="betaExperience" required>
+                    <option value="">Select</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="availability">
+                    How often can you test? *
+                </label>
+
+                <select id="availability" required>
+                    <option value="">Select</option>
+                    <option>Almost every day</option>
+                    <option>A few times per week</option>
+                    <option>Once per week</option>
+                    <option>Only occasionally</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="bugReporting">
+                    How comfortable are you reporting bugs? *
+                </label>
+
+                <select id="bugReporting" required>
+                    <option value="">Select</option>
+                    <option>Very comfortable</option>
+                    <option>Comfortable</option>
+                    <option>Somewhat comfortable</option>
+                    <option>Not very comfortable</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="back">← Back</button>
+                <button type="button" class="next">Continue →</button>
+            </div>
+
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step" data-step="3">
+
+            <h2>Why You?</h2>
+
+            <div class="field">
+                <label for="whyBeta">
+                    Why do you want to beta test Monkum? *
+                </label>
+
+                <textarea
+                    id="whyBeta"
+                    maxlength="1500"
+                    rows="6"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="field">
+                <label for="feedback">
+                    What would you improve or add to Monkum?
+                </label>
+
+                <textarea
+                    id="feedback"
+                    maxlength="1500"
+                    rows="5"
+                ></textarea>
+            </div>
+
+            <label class="agreement">
+                <input id="agreement" type="checkbox" required>
+
+                <span>
+                    I understand beta builds may contain bugs and unfinished
+                    features. I agree to report problems honestly and not
+                    intentionally abuse bugs.
+                </span>
+            </label>
+
+            <div class="buttons">
+                <button type="button" class="back">← Back</button>
+
+                <button
+                    id="submitButton"
+                    type="submit"
+                    class="submit"
+                >
+                    Submit Application
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+    <div id="successMessage" class="message">
+        <div class="success-icon">✓</div>
+        <h2>Application Submitted!</h2>
+        <p>
+            Thank you for applying to the Monkum Beta Program.
+        </p>
+    </div>
+
+    <div id="errorMessage" class="error"></div>
+
+</section>
+
+<footer>MONKUM BETA PROGRAM</footer>
+```
+
+</main>
+
+<script>
+    let currentStep = 1;
+
+    const steps = document.querySelectorAll(".step");
+    const progressFill = document.getElementById("progressFill");
+    const form = document.getElementById("applicationForm");
+
+    function updateStep() {
+        steps.forEach(step => {
+            step.classList.toggle(
+                "active",
+                Number(step.dataset.step) === currentStep
+            );
+        });
+
+        progressFill.style.width =
+            `${(currentStep / 3) * 100}%`;
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function validateStep() {
+        const step = document.querySelector(
+            `.step[data-step="${currentStep}"]`
+        );
+
+        for (const field of step.querySelectorAll("[required]")) {
+            if (!field.checkValidity()) {
+                field.reportValidity();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    document.querySelectorAll(".next").forEach(button => {
+        button.addEventListener("click", () => {
+            if (!validateStep()) return;
+
+            if (currentStep < 3) {
+                currentStep++;
+                updateStep();
+            }
+        });
+    });
+
+    document.querySelectorAll(".back").forEach(button => {
+        button.addEventListener("click", () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep();
+            }
+        });
+    });
+
+    function showError(message) {
+        const box = document.getElementById("errorMessage");
+        box.textContent = message;
+        box.classList.add("show");
+    }
+
+    form.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        document
+            .getElementById("errorMessage")
+            .classList.remove("show");
+
+        if (!validateStep()) return;
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+        const data = {
+            email:
+                document.getElementById("email").value.trim(),
+
+            metaUsername:
+                document.getElementById("metaUsername").value.trim(),
+
+            discordUsername:
+                document.getElementById("discordUsername").value.trim(),
+
+            age:
+                document.getElementById("age").value,
+
+            headset:
+                document.getElementById("headset").value,
+
+            playTime:
+                document.getElementById("playTime").value,
+
+            betaExperience:
+                document.getElementById("betaExperience").value,
+
+            availability:
+                document.getElementById("availability").value,
+
+            bugReporting:
+                document.getElementById("bugReporting").value,
+
+            whyBeta:
+                document.getElementById("whyBeta").value.trim(),
+
+            feedback:
+                document.getElementById("feedback").value.trim()
+        };
+
+        try {
+            const response = await fetch("/api/submit", {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.error || "Submission failed."
+                );
+            }
+
+            form.style.display = "none";
+
+            document.querySelector(".progress").style.display =
+                "none";
+
+            document
+                .getElementById("successMessage")
+                .classList.add("show");
+
+        } catch (error) {
+            showError(error.message);
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Application";
+        }
+    });
+</script>
+
+</body>
+</html>
