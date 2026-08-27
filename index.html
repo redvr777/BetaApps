@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Monkum | Beta Tester Application</title>
+<meta name="description" content="Apply to become a Monkum beta tester.">
+
+<style>
+    :root {
+        --bg: #080d0a;
+        --panel: rgba(19, 30, 22, 0.92);
+        --panel-light: #223528;
+        --green: #71e878;
+        --green-dark: #39a94d;
+        --text: #f2fff3;
+        --muted: #9bb19e;
+        --border: rgba(113, 232, 120, 0.18);
+        --error: #ff8f8f;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background:
+            radial-gradient(circle at top, #16291a 0%, transparent 35%),
+            var(--bg);
+    }
+
+    .background-glow {
+        position: fixed;
+        width: 450px;
+        height: 450px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.12;
+        pointer-events: none;
+    }
+
+    .glow-one {
+        background: #71e878;
+        top: -180px;
+        left: -180px;
+    }
+
+    .glow-two {
+        background: #3e9cff;
+        right: -220px;
+        bottom: -220px;
+    }
+
+    .page {
+        width: min(900px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 70px 0 35px;
+        position: relative;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 45px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 9px 16px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(113, 232, 120, 0.08);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    .hero h1 {
+        margin: 20px 0 15px;
+        font-size: clamp(40px, 8vw, 76px);
+        line-height: 0.95;
+        letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+        color: var(--green);
+        text-shadow: 0 0 30px rgba(113, 232, 120, 0.35);
+    }
+
+    .hero p {
+        max-width: 600px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.6;
+    }
+
+    .form-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(15px);
+    }
+
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .form-header h2 {
+        margin: 0 0 8px;
+        font-size: 28px;
+    }
+
+    .form-header p {
+        margin: 0;
+        color: var(--muted);
+    }
+
+    .step-counter {
+        min-width: 60px;
+        text-align: center;
+        padding: 10px;
+        background: #111c14;
+        border-radius: 10px;
+        color: var(--muted);
+    }
+
+    .step-counter span {
+        color: var(--green);
+        font-weight: bold;
+    }
+
+    .progress-bar {
+        height: 7px;
+        background: #111c14;
+        border-radius: 99px;
+        overflow: hidden;
+        margin: 28px 0;
+    }
+
+    .progress-fill {
+        width: 33.333%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--green-dark), var(--green));
+        border-radius: inherit;
+        transition: width 0.3s ease;
+    }
+
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+        animation: fadeIn 0.25s ease;
+    }
+
+    .form-step h3 {
+        margin-top: 0;
+        margin-bottom: 24px;
+        font-size: 23px;
+    }
+
+    .field {
+        margin-bottom: 20px;
+    }
+
+    .field label {
+        display: block;
+        margin-bottom: 9px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 12px;
+        padding: 14px;
+        background: #101a12;
+        color: var(--text);
+        font: inherit;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 4px rgba(113, 232, 120, 0.1);
+    }
+
+    small {
+        display: block;
+        text-align: right;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    .checkbox-field {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-top: 24px;
+    }
+
+    .checkbox-field input {
+        width: 18px;
+        height: 18px;
+        margin-top: 3px;
+        accent-color: var(--green);
+    }
+
+    .checkbox-field label {
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 14px;
+    }
+
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    button {
+        border: none;
+        border-radius: 12px;
+        padding: 14px 22px;
+        font: inherit;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+    }
+
+    button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+    }
+
+    .next-button,
+    .submit-button {
+        background: var(--green);
+        color: #071008;
+        margin-left: auto;
+    }
+
+    .back-button {
+        background: #18241b;
+        color: var(--text);
+    }
+
+    .success-message,
+    .error-message {
+        display: none;
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .success-message.show,
+    .error-message.show {
+        display: block;
+    }
+
+    .success-icon {
+        width: 70px;
+        height: 70px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: rgba(113, 232, 120, 0.15);
+        border: 1px solid var(--green);
+        color: var(--green);
+        font-size: 36px;
+    }
+
+    .success-message h2 {
+        margin-bottom: 10px;
+    }
+
+    .success-message p {
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .error-message {
+        color: var(--error);
+        line-height: 1.6;
+    }
+
+    footer {
+        text-align: center;
+        padding-top: 35px;
+        color: #59705d;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .page {
+            width: min(100% - 20px, 900px);
+            padding-top: 35px;
+        }
+
+        .form-card {
+            padding: 22px 16px;
+            border-radius: 18px;
+        }
+
+        .form-header {
+            align-items: flex-start;
+        }
+
+        .form-header h2 {
+            font-size: 23px;
+        }
+
+        .hero h1 {
+            letter-spacing: -2px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<main class="page">
+
+    <section class="hero">
+        <div class="badge">MONKUM BETA PROGRAM</div>
+
+        <h1>
+            JOIN THE <span>MONKUM</span><br>
+            BETA TEAM
+        </h1>
+
+        <p>
+            Help test new updates, find bugs, give feedback,
+            and help shape the future of Monkum.
+        </p>
+    </section>
+
+    <section class="form-card">
+
+        <div class="form-header">
+            <div>
+                <h2>Beta Tester Application</h2>
+                <p>Please answer the questions honestly.</p>
+            </div>
+
+            <div class="step-counter">
+                <span id="currentStep">1</span> / 3
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form id="betaForm">
+
+            <!-- STEP 1 -->
+            <div class="form-step active" data-step="1">
+
+                <h3>About You</h3>
+
+                <div class="field">
+                    <label for="metaUsername">
+                        Meta / VR Username *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="metaUsername"
+                        required
+                        maxlength="50"
+                        placeholder="Your username"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="discordUsername">
+                        Discord Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="discordUsername"
+                        maxlength="50"
+                        placeholder="username"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="age">Age *</label>
+
+                    <select id="age" required>
+                        <option value="">Select your age</option>
+                        <option value="Under 13">Under 13</option>
+                        <option value="13-15">13-15</option>
+                        <option value="16-17">16-17</option>
+                        <option value="18+">18+</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="headset">VR Headset *</label>
+
+                    <select id="headset" required>
+                        <option value="">Select your headset</option>
+                        <option>Meta Quest 2</option>
+                        <option>Meta Quest 3</option>
+                        <option>Meta Quest 3S</option>
+                        <option>Meta Quest Pro</option>
+                        <option>PC VR</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="button-row">
+                    <span></span>
+                    <button type="button" class="next-button">
+                        Continue →
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="form-step" data-step="2">
+
+                <h3>Your Experience</h3>
+
+                <div class="field">
+                    <label for="playTime">
+                        How long have you played Monkum? *
+                    </label>
+
+                    <select id="playTime" required>
+                        <option value="">Choose one</option>
+                        <option>Less than 1 hour</option>
+                        <option>1-5 hours</option>
+                        <option>5-20 hours</option>
+                        <option>20+ hours</option>
+                        <option>I am new to Monkum</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="betaExperience">
+                        Have you beta tested a game before? *
+                    </label>
+
+                    <select id="betaExperience" required>
+                        <option value="">Choose one</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="availability">
+                        How often can you test? *
+                    </label>
+
+                    <select id="availability" required>
+                        <option value="">Choose one</option>
+                        <option>Almost every day</option>
+                        <option>A few times per week</option>
+                        <option>Once per week</option>
+                        <option>Only occasionally</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="bugReporting">
+                        How comfortable are you reporting bugs? *
+                    </label>
+
+                    <select id="bugReporting" required>
+                        <option value="">Choose one</option>
+                        <option>Very comfortable</option>
+                        <option>Comfortable</option>
+                        <option>Somewhat comfortable</option>
+                        <option>Not very comfortable</option>
+                    </select>
+                </div>
+
+                <div class="button-row">
+                    <button type="button" class="back-button">
+                        ← Back
+                    </button>
+
+                    <button type="button" class="next-button">
+                        Continue →
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="form-step" data-step="3">
+
+                <h3>Why You?</h3>
+
+                <div class="field">
+                    <label for="whyBeta">
+                        Why do you want to become a Monkum beta tester? *
+                    </label>
+
+                    <textarea
+                        id="whyBeta"
+                        rows="5"
+                        maxlength="1500"
+                        required
+                        placeholder="Tell us why you want to help test Monkum..."
+                    ></textarea>
+
+                    <small>
+                        <span id="whyCount">0</span> / 1500
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="feedback">
+                        What would you improve or add to Monkum?
+                    </label>
+
+                    <textarea
+                        id="feedback"
+                        rows="5"
+                        maxlength="1500"
+                        placeholder="Your ideas and feedback..."
+                    ></textarea>
+                </div>
+
+                <div class="checkbox-field">
+                    <input
+                        type="checkbox"
+                        id="agreement"
+                        required
+                    >
+
+                    <label for="agreement">
+                        I understand that beta versions may contain bugs,
+                        unfinished features, and unexpected issues. I agree
+                        to report problems honestly and not intentionally
+                        abuse bugs.
+                    </label>
+                </div>
+
+                <div class="button-row">
+                    <button type="button" class="back-button">
+                        ← Back
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                        id="submitButton"
+                    >
+                        Submit Application
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✓</div>
+
+            <h2>Application Submitted!</h2>
+
+            <p>
+                Thanks for applying to the Monkum Beta Program.
+                Your application has been received.
+            </p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+    </section>
+
+    <footer>
+        MONKUM BETA PROGRAM
+    </footer>
+
+</main>
+
+<script>
+    /*
+     * IMPORTANT:
+     *
+     * This configuration is only for testing.
+     * NEVER put a real GitHub token in a public website.
+     *
+     * Anyone can inspect the page and steal the token.
+     *
+     * For a public website, use a backend/serverless API.
+     */
+
+    const GITHUB_OWNER = "redvr777";
+    const GITHUB_REPO = "BetaApps";
+    const GITHUB_BRANCH = "main";
+
+    // DO NOT PUT YOUR REAL TOKEN HERE ON A PUBLIC WEBSITE.
+    const GITHUB_TOKEN = "PUT_TOKEN_HERE";
+
+
+
+    const form = document.getElementById("betaForm");
+    const steps = document.querySelectorAll(".form-step");
+    const nextButtons = document.querySelectorAll(".next-button");
+    const backButtons = document.querySelectorAll(".back-button");
+
+    const currentStepText =
+        document.getElementById("currentStep");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+    const whyBeta =
+        document.getElementById("whyBeta");
+
+    const whyCount =
+        document.getElementById("whyCount");
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    let currentStep = 1;
+
+
+    function updateStep() {
+
+        steps.forEach(step => {
+
+            step.classList.toggle(
+                "active",
+                Number(step.dataset.step) === currentStep
+            );
+
+        });
+
+        currentStepText.textContent = currentStep;
+
+        progressFill.style.width =
+            `${(currentStep / 3) * 100}%`;
+
+        document.querySelector(".form-card").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+
+    function validateCurrentStep() {
+
+        const step = document.querySelector(
+            `.form-step[data-step="${currentStep}"]`
+        );
+
+        const requiredFields =
+            step.querySelectorAll("[required]");
+
+        for (const field of requiredFields) {
+
+            if (!field.checkValidity()) {
+
+                field.reportValidity();
+                return false;
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+
+    nextButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            if (!validateCurrentStep()) return;
+
+            if (currentStep < 3) {
+
+                currentStep++;
+                updateStep();
+
+            }
+
+        });
+
+    });
+
+
+    backButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            if (currentStep > 1) {
+
+                currentStep--;
+                updateStep();
+
+            }
+
+        });
+
+    });
+
+
+    whyBeta.addEventListener("input", () => {
+
+        whyCount.textContent =
+            whyBeta.value.length;
+
+    });
+
+
+    function slugify(text) {
+
+        return text
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .substring(0, 40) || "tester";
+
+    }
+
+
+    function createRandomId() {
+
+        const array = new Uint8Array(6);
+
+        crypto.getRandomValues(array);
+
+        return Array.from(array)
+            .map(byte => byte.toString(16).padStart(2, "0"))
+            .join("");
+
+    }
+
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        if (!validateCurrentStep()) return;
+
+
+        if (
+            !GITHUB_TOKEN ||
+            GITHUB_TOKEN === "PUT_TOKEN_HERE"
+        ) {
+
+            errorMessage.textContent =
+                "The website has not been configured yet.";
+
+            errorMessage.classList.add("show");
+
+            return;
+
+        }
+
+
+        errorMessage.classList.remove("show");
+
+
+        const applicationId =
+            createRandomId();
+
+        const now =
+            new Date();
+
+
+        const safeUsername =
+            slugify(
+                document
+                    .getElementById("metaUsername")
+                    .value
+                    .trim()
+            );
+
+
+        const date =
+            now.toISOString().slice(0, 10);
+
+
+        const application = {
+
+            applicationId: applicationId,
+
+            submittedAt:
+                now.toISOString(),
+
+            applicant: {
+
+                metaUsername:
+                    document
+                        .getElementById("metaUsername")
+                        .value
+                        .trim(),
+
+                discordUsername:
+                    document
+                        .getElementById("discordUsername")
+                        .value
+                        .trim() || null,
+
+                age:
+                    document
+                        .getElementById("age")
+                        .value,
+
+                headset:
+                    document
+                        .getElementById("headset")
+                        .value
+
+            },
+
+            experience: {
+
+                playTime:
+                    document
+                        .getElementById("playTime")
+                        .value,
+
+                betaExperience:
+                    document
+                        .getElementById("betaExperience")
+                        .value,
+
+                availability:
+                    document
+                        .getElementById("availability")
+                        .value,
+
+                bugReporting:
+                    document
+                        .getElementById("bugReporting")
+                        .value
+
+            },
+
+            answers: {
+
+                whyBeta:
+                    document
+                        .getElementById("whyBeta")
+                        .value
+                        .trim(),
+
+                feedback:
+                    document
+                        .getElementById("feedback")
+                        .value
+                        .trim() || null
+
+            },
+
+            agreement: true
+
+        };
+
+
+        const fileName =
+            `${safeUsername}-${date}-${applicationId}.json`;
+
+
+        const filePath =
+            `applications/${fileName}`;
+
+
+        const content =
+            btoa(
+                unescape(
+                    encodeURIComponent(
+                        JSON.stringify(
+                            application,
+                            null,
+                            2
+                        )
+                    )
+                )
+            );
+
+
+        submitButton.disabled = true;
+
+        submitButton.textContent =
+            "Submitting...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${GITHUB_TOKEN}`,
+
+                            "Accept":
+                                "application/vnd.github+json",
+
+                            "Content-Type":
+                                "application/json",
+
+                            "X-GitHub-Api-Version":
+                                "2022-11-28"
+                        },
+
+                        body: JSON.stringify({
+
+                            message:
+                                `New Monkum beta application: ${safeUsername}`,
+
+                            content:
+                                content,
+
+                            branch:
+                                GITHUB_BRANCH
+
+                        })
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                console.error(
+                    "GitHub Error:",
+                    result
+                );
+
+                throw new Error(
+                    result.message ||
+                    "Unable to save application."
+                );
+
+            }
+
+
+            form.style.display = "none";
+
+            document.querySelector(
+                ".progress-bar"
+            ).style.display = "none";
+
+
+            successMessage.classList.add("show");
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            errorMessage.textContent =
+                "Unable to submit your application. Please try again later.";
+
+
+            errorMessage.classList.add("show");
+
+
+            submitButton.disabled = false;
+
+            submitButton.textContent =
+                "Submit Application";
+
+        }
+
+    });
+</script>
+```
+
+</body>
+</html>
